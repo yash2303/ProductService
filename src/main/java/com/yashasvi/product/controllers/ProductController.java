@@ -3,6 +3,7 @@ package com.yashasvi.product.controllers;
 import com.yashasvi.product.models.Product;
 import com.yashasvi.product.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -26,32 +27,33 @@ public class ProductController {
     }
 
     @GetMapping() // localhost:8080/products
-    public List<Product> getAllProducts() {
-        return productService.getAllProducts();
+    public ResponseEntity<List<Product>> getAllProducts() {
+        return ResponseEntity.ok(productService.getAllProducts());
     }
 
     @GetMapping("/{id}")
-    public Product getSingleProduct(@PathVariable("id") Long id) {
-        return productService.getSingleProduct(id);
+    public ResponseEntity<Product> getSingleProduct(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(productService.getSingleProduct(id));
     }
 
     @PostMapping()
-    public Product addNewProduct(@RequestBody Product product) {
-        return productService.addNewProduct(product);
+    public ResponseEntity<Product> addNewProduct(@RequestBody Product product) {
+        return ResponseEntity.ok(productService.addNewProduct(product));
     }
 
     @PatchMapping("/{id}")
-    public Product updateProduct(@PathVariable("id") Long id, @RequestBody Product product) {
-        return productService.updateProduct(id, product);
+    public ResponseEntity<Product> updateProduct(@PathVariable("id") Long id, @RequestBody Product product) {
+        return ResponseEntity.ok(productService.updateProduct(id, product));
     }
 
     @PutMapping("/{id}")
-    public Product replaceProduct(@PathVariable("id") Long id, @RequestBody Product product) {
-        return productService.replaceProduct(id, product);
+    public ResponseEntity<Product> replaceProduct(@PathVariable("id") Long id, @RequestBody Product product) {
+        return ResponseEntity.ok(productService.replaceProduct(id, product));
     }
 
     @DeleteMapping("/{id}")
-    public void deleteProduct(@PathVariable("id") Long id) {
+    public ResponseEntity<Void> deleteProduct(@PathVariable("id") Long id) {
         productService.deleteProduct(id);
+        return ResponseEntity.noContent().build();
     }
 }

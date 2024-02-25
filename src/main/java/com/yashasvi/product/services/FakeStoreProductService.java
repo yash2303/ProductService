@@ -3,9 +3,14 @@ package com.yashasvi.product.services;
 import com.yashasvi.product.dtos.FakeStoreProductDto;
 import com.yashasvi.product.models.Product;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.RequestEntity;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.net.URI;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -69,13 +74,15 @@ public class FakeStoreProductService implements ProductService {
     @Override
     public Product replaceProduct(Long id, Product product) {
         FakeStoreProductDto fakeStoreProductDto = convertProductToFakeStoreProduct(product);
-//        ResponseEntity<FakeStoreProductDto> response = restTemplate.exchange(
-//                "https://fakestoreapi.com/products/" + id,
-//                HttpMethod.PUT,
-//                fakeStoreProductDto,
-//                FakeStoreProductDto.class
-//        );
-        return null;
+        RequestEntity<FakeStoreProductDto> fakeStoreProductDtoHttpEntity = new RequestEntity<>(
+                fakeStoreProductDto,
+                HttpMethod.PUT,
+                URI.create("https://fakestoreapi.com/products/" + id));
+        ResponseEntity<FakeStoreProductDto> response = restTemplate.exchange(
+                fakeStoreProductDtoHttpEntity,
+                FakeStoreProductDto.class
+        );
+        return response.getBody() != null ? convertFakeStoreProductToProduct(response.getBody()) : null;
     }
 
     @Override

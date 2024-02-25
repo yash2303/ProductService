@@ -1,0 +1,9 @@
+PATCH http://localhost:8010/products/3
+Content-Type: application/json
+
+{
+  "title": "test product",
+  "category": {
+    "name": "men's clothing"
+  }
+}

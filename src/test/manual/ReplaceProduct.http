@@ -1,0 +1,11 @@
+PUT http://localhost:8010/products/1
+Content-Type: application/json
+
+{
+  "title": "test product",
+  "price": 13.5,
+  "description": "lorem set",
+  "category": {
+    "name": "men's clothing"
+  }
+}

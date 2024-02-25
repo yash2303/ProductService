@@ -3,25 +3,26 @@ package com.yashasvi.product.services;
 import com.yashasvi.product.dtos.FakeStoreProductDto;
 import com.yashasvi.product.models.Category;
 import com.yashasvi.product.models.Product;
+import lombok.val;
 
 public class ProductConverter {
 
     static FakeStoreProductDto convertProductToFakeStoreProduct(Product product) {
-        FakeStoreProductDto fakeStoreProduct = new FakeStoreProductDto();
+        FakeStoreProductDto.FakeStoreProductDtoBuilder fakeStoreProductBuilder = FakeStoreProductDto.builder();
         if (product.getId() != null)
-            fakeStoreProduct.setId(product.getId());
+            fakeStoreProductBuilder.id(product.getId());
         if (product.getTitle() != null)
-            fakeStoreProduct.setTitle(product.getTitle());
+            fakeStoreProductBuilder.title(product.getTitle());
         if (product.getPrice() != null)
-            fakeStoreProduct.setPrice(product.getPrice());
+            fakeStoreProductBuilder.price(product.getPrice());
         if (product.getDescription() != null)
-            fakeStoreProduct.setDescription(product.getDescription());
+            fakeStoreProductBuilder.description(product.getDescription());
         if (product.getImageUrl() != null)
-            fakeStoreProduct.setImage(product.getImageUrl());
+            fakeStoreProductBuilder.image(product.getImageUrl());
         Category category = product.getCategory();
         if (category != null)
-            fakeStoreProduct.setCategory(category.getName());
-        return fakeStoreProduct;
+            fakeStoreProductBuilder.category(category.getName());
+        return fakeStoreProductBuilder.build();
     }
 
     static Product convertFakeStoreProductToProduct(FakeStoreProductDto fakeStoreProduct) {
