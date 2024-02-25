@@ -1,5 +1,6 @@
 package com.yashasvi.product.controllers;
 
+import com.yashasvi.product.exceptions.ProductNotFoundException;
 import com.yashasvi.product.models.Product;
 import com.yashasvi.product.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,7 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Product> getSingleProduct(@PathVariable("id") Long id) {
+    public ResponseEntity<Product> getSingleProduct(@PathVariable("id") Long id) throws ProductNotFoundException {
         return ResponseEntity.ok(productService.getSingleProduct(id));
     }
 

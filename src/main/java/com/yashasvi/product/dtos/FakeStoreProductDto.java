@@ -1,11 +1,11 @@
 package com.yashasvi.product.dtos;
 
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
-@Setter
+@Data
 @Builder
 public class FakeStoreProductDto {
     private Long id;

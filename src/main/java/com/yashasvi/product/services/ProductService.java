@@ -1,12 +1,13 @@
 package com.yashasvi.product.services;
 
+import com.yashasvi.product.exceptions.ProductNotFoundException;
 import com.yashasvi.product.models.Product;
 
 import java.util.List;
 
 public interface ProductService {
 
-    Product getSingleProduct(Long id);
+    Product getSingleProduct(Long id) throws ProductNotFoundException;
 
     List<Product> getAllProducts();
 

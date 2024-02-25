@@ -1,9 +1,9 @@
 package com.yashasvi.product.services;
 
 import com.yashasvi.product.dtos.FakeStoreProductDto;
+import com.yashasvi.product.exceptions.ProductNotFoundException;
 import com.yashasvi.product.models.Product;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +20,7 @@ import static com.yashasvi.product.services.ProductConverter.convertProductToFak
 
 @Service
 public class FakeStoreProductService implements ProductService {
+    public static final String FAKE_STORE_PRODUCT_ENDPOINT = "https://fakestoreapi.com/products/";
     private final RestTemplate restTemplate;
 
     @Autowired
@@ -28,19 +29,22 @@ public class FakeStoreProductService implements ProductService {
     }
 
     @Override
-    public Product getSingleProduct(Long id) {
+    public Product getSingleProduct(Long id) throws ProductNotFoundException {
         FakeStoreProductDto productDto = restTemplate.getForObject(
-                "https://fakestoreapi.com/products/" + id,
+                FAKE_STORE_PRODUCT_ENDPOINT + id,
                 FakeStoreProductDto.class
         );
+        if (productDto == null) {
+            throw new ProductNotFoundException("Product with id " + id + " not found");
+        }
 
-        return productDto != null ? convertFakeStoreProductToProduct(productDto) : null;
+        return convertFakeStoreProductToProduct(productDto);
     }
 
     @Override
     public List<Product> getAllProducts() {
         FakeStoreProductDto[] productDtos = restTemplate.getForObject(
-                "https://fakestoreapi.com/products",
+                FAKE_STORE_PRODUCT_ENDPOINT,
                 FakeStoreProductDto[].class
         );
 
@@ -53,7 +57,7 @@ public class FakeStoreProductService implements ProductService {
     public Product addNewProduct(Product product) {
         FakeStoreProductDto fakeStoreProduct = convertProductToFakeStoreProduct(product);
         FakeStoreProductDto response = restTemplate.postForObject(
-                "https://fakestoreapi.com/products",
+                FAKE_STORE_PRODUCT_ENDPOINT,
                 fakeStoreProduct,
                 FakeStoreProductDto.class
         );
@@ -64,7 +68,7 @@ public class FakeStoreProductService implements ProductService {
     public Product updateProduct(Long id, Product product) {
         FakeStoreProductDto fakeStoreProduct = convertProductToFakeStoreProduct(product);
         FakeStoreProductDto response = restTemplate.patchForObject(
-                "https://fakestoreapi.com/products/" + id,
+                FAKE_STORE_PRODUCT_ENDPOINT + id,
                 fakeStoreProduct,
                 FakeStoreProductDto.class
         );
@@ -77,7 +81,7 @@ public class FakeStoreProductService implements ProductService {
         RequestEntity<FakeStoreProductDto> fakeStoreProductDtoHttpEntity = new RequestEntity<>(
                 fakeStoreProductDto,
                 HttpMethod.PUT,
-                URI.create("https://fakestoreapi.com/products/" + id));
+                URI.create(FAKE_STORE_PRODUCT_ENDPOINT + id));
         ResponseEntity<FakeStoreProductDto> response = restTemplate.exchange(
                 fakeStoreProductDtoHttpEntity,
                 FakeStoreProductDto.class
@@ -87,6 +91,6 @@ public class FakeStoreProductService implements ProductService {
 
     @Override
     public void deleteProduct(Long id) {
-        restTemplate.delete("https://fakestoreapi.com/products/" + id);
+        restTemplate.delete(FAKE_STORE_PRODUCT_ENDPOINT + id);
     }
 }
