@@ -18,7 +18,7 @@ import java.util.List;
 import static com.yashasvi.product.services.ProductConverter.convertFakeStoreProductToProduct;
 import static com.yashasvi.product.services.ProductConverter.convertProductToFakeStoreProduct;
 
-@Service
+@Service("fakeStoreProductService")
 public class FakeStoreProductService implements ProductService {
     public static final String FAKE_STORE_PRODUCT_ENDPOINT = "https://fakestoreapi.com/products/";
     private final RestTemplate restTemplate;

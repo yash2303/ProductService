@@ -3,7 +3,7 @@ package com.yashasvi.product.controllers;
 import com.yashasvi.product.models.Category;
 import com.yashasvi.product.models.Product;
 import com.yashasvi.product.services.CategoryService;
-import org.springframework.http.HttpStatus;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,7 +18,7 @@ public class CategoryController {
 
     private final CategoryService categoryService;
 
-    public CategoryController(CategoryService categoryService) {
+    public CategoryController(@Qualifier("selfCategoryService") CategoryService categoryService) {
         this.categoryService = categoryService;
     }
 

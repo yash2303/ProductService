@@ -1,9 +1,11 @@
-PATCH http://localhost:8010/products/3
+PATCH http://localhost:8010/products/152
 Content-Type: application/json
 
 {
-  "title": "test product",
+  "title": "Jordan",
   "category": {
-    "name": "men's clothing"
+    "name": "shoes"
   }
 }
+
+###

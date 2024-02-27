@@ -2,11 +2,13 @@ POST http://localhost:8010/products
 Content-Type: application/json
 
 {
-    "title": "test product",
+    "title": "test product 1",
     "price": 13.5,
-    "description": "lorem set",
+    "description": "lorem set 1",
     "imageUrl": "https://pravatar.cc",
     "category": {
-      "name": "men's clothing"
+      "name": "jewelry"
     }
 }
+
+###
