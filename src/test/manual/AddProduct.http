@@ -2,12 +2,12 @@ POST http://localhost:8010/products
 Content-Type: application/json
 
 {
-    "title": "test product 1",
-    "price": 13.5,
-    "description": "lorem set 1",
-    "imageUrl": "https://pravatar.cc",
+    "title": "Voltas 1.5 Ton 5 Star Inverter Split AC (Copper, 2021 185V ADJ, White)",
+    "price": 39999,
+    "description": "Split AC with inverter compressor: Variable speed compressor which adjusts power depending on heat load. It is most energy efficient and has lowest-noise operation",
+    "imageUrl": "https://m.media-amazon.com/images/I/71XfQ5zXk8L._AC_UY218_.jpg",
     "category": {
-      "name": "jewelry"
+      "name": "Electronics"
     }
 }
 
