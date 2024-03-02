@@ -1,4 +1,4 @@
-GET http://localhost:8010/products/54
+GET http://localhost:8010/products/10
 
 ###
 
