@@ -5,11 +5,13 @@ import com.yashasvi.product.models.Category;
 import com.yashasvi.product.models.Product;
 import com.yashasvi.product.repositories.CategoryRepository;
 import com.yashasvi.product.repositories.ProductRepository;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Primary
 @Service("selfProductService")
 public class SelfProductService implements ProductService {
     private final ProductRepository productRepository;
