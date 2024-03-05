@@ -24,11 +24,11 @@ public class ProductController {
     private final ProductService productService;
 
     @Autowired
-    public ProductController(@Qualifier("selfProductService") ProductService productService) {
+    public ProductController(@Qualifier("fakeStoreProductService") ProductService productService) {
         this.productService = productService;
     }
 
-    @GetMapping() // localhost:8080/products
+    @GetMapping()
     public ResponseEntity<List<Product>> getAllProducts() {
         return ResponseEntity.ok(productService.getAllProducts());
     }

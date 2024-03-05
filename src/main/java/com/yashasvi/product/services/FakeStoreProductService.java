@@ -4,6 +4,7 @@ import com.yashasvi.product.dtos.FakeStoreProductDto;
 import com.yashasvi.product.exceptions.ProductNotFoundException;
 import com.yashasvi.product.models.Product;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
@@ -22,14 +23,21 @@ import static com.yashasvi.product.services.ProductConverter.convertProductToFak
 public class FakeStoreProductService implements ProductService {
     public static final String FAKE_STORE_PRODUCT_ENDPOINT = "https://fakestoreapi.com/products/";
     private final RestTemplate restTemplate;
+    private final RedisTemplate<String, Object> redisTemplate;
 
     @Autowired
-    public FakeStoreProductService(RestTemplate restTemplate) {
+    public FakeStoreProductService(RestTemplate restTemplate, RedisTemplate<String, Object> redisTemplate) {
         this.restTemplate = restTemplate;
+        this.redisTemplate = redisTemplate;
     }
 
     @Override
     public Product getSingleProduct(Long id) throws ProductNotFoundException {
+        Product cachedProduct = (Product) redisTemplate.opsForHash().get("PRODUCTS", "PRODUCT_" + id);
+        if (cachedProduct != null) {
+            return cachedProduct;
+        }
+
         FakeStoreProductDto productDto = restTemplate.getForObject(
                 FAKE_STORE_PRODUCT_ENDPOINT + id,
                 FakeStoreProductDto.class
@@ -37,8 +45,9 @@ public class FakeStoreProductService implements ProductService {
         if (productDto == null) {
             throw new ProductNotFoundException("Product with id " + id + " not found");
         }
-
-        return convertFakeStoreProductToProduct(productDto);
+        Product product = convertFakeStoreProductToProduct(productDto);
+        redisTemplate.opsForHash().put("PRODUCTS", "PRODUCT_" + id, product);
+        return product;
     }
 
     @Override
