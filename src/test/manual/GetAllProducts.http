@@ -1,4 +1,4 @@
-GET http://localhost:8010/products
+GET http://localhost:8010/products?pageNumber=1&pageSize=10&sortBy=title&order=asc
 
 ###
 

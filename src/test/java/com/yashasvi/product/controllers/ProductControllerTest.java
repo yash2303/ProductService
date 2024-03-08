@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 
 import java.util.List;
 
@@ -17,7 +19,7 @@ import static org.mockito.Mockito.when;
 class ProductControllerTest {
     @Autowired
     private ProductController productController;
-    @MockBean
+    @MockBean(name = "selfProductService")
     private ProductService productService;
 
     @Test
@@ -32,12 +34,12 @@ class ProductControllerTest {
                 .description("Description 2")
                 .price(200.0)
                 .build();
-        when(productService.getAllProducts()).thenReturn(List.of(p1, p2));
+        when(productService.getAllProducts(0, 2, "id", "asc")).thenReturn(new PageImpl<>(List.of(p1, p2)));
 
-        List<Product> products = productController.getAllProducts().getBody();
+        Page<Product> products = productController.getAllProducts(0, 2, "id", "asc").getBody();
 
         Assertions.assertNotNull(products);
-        Assertions.assertArrayEquals(new Product[]{p1, p2}, products.toArray());
+        Assertions.assertArrayEquals(new Product[]{p1, p2}, products.stream().toArray());
     }
 
     @Test

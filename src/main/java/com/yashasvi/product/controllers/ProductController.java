@@ -5,6 +5,7 @@ import com.yashasvi.product.models.Product;
 import com.yashasvi.product.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,9 +15,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/products")
@@ -24,13 +24,16 @@ public class ProductController {
     private final ProductService productService;
 
     @Autowired
-    public ProductController(@Qualifier("fakeStoreProductService") ProductService productService) {
+    public ProductController(@Qualifier("selfProductService") ProductService productService) {
         this.productService = productService;
     }
 
     @GetMapping()
-    public ResponseEntity<List<Product>> getAllProducts() {
-        return ResponseEntity.ok(productService.getAllProducts());
+    public ResponseEntity<Page<Product>> getAllProducts(@RequestParam(value = "pageNumber", defaultValue = "0") int pageNumber,
+                                                        @RequestParam(value = "pageSize", defaultValue = "2") int pageSize,
+                                                        @RequestParam(value = "sortBy", defaultValue = "id") String sortBy,
+                                                        @RequestParam(value = "order", defaultValue = "asc") String order) {
+        return ResponseEntity.ok(productService.getAllProducts(pageNumber, pageSize, sortBy, order));
     }
 
     @GetMapping("/{id}")

@@ -4,6 +4,8 @@ import com.yashasvi.product.dtos.FakeStoreProductDto;
 import com.yashasvi.product.exceptions.ProductNotFoundException;
 import com.yashasvi.product.models.Product;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.RequestEntity;
@@ -51,15 +53,16 @@ public class FakeStoreProductService implements ProductService {
     }
 
     @Override
-    public List<Product> getAllProducts() {
+    public Page<Product> getAllProducts(int pageNumber, int pageSize, String sortBy, String order) {
         FakeStoreProductDto[] productDtos = restTemplate.getForObject(
                 FAKE_STORE_PRODUCT_ENDPOINT,
                 FakeStoreProductDto[].class
         );
 
-        return productDtos != null ? Arrays.stream(productDtos)
+        List<Product> products = productDtos != null ? Arrays.stream(productDtos)
                 .map(ProductConverter::convertFakeStoreProductToProduct)
                 .toList() : Collections.emptyList();
+        return new PageImpl<>(products);
     }
 
     @Override
